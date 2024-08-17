@@ -13,6 +13,24 @@ class RolePermissionController extends Controller
     public function __construct(){
     }
 
+    function create(Request $req){
+        $allPermissions = Permission::select('name', 'id')->get();
+        $allRoles = Role::with('permissions')->withCount('users')->get();
+
+        return response()->json([
+            "permissions" => $allPermissions,
+            "roles" => $allRoles
+        ], Response::HTTP_OK);
+    }
+
+    function index_role(Request $req)
+    {
+        $roles = Role::with('permissions')->paginate();
+        return response()->json([
+            "data" => $roles
+        ], Response::HTTP_OK);
+    }
+
     function store_role(Request $req){
         $req->validate([
             'name' => 'required|string|unique:roles,name',
