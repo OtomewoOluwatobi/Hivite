@@ -12,7 +12,7 @@ class RolePermissionController extends Controller
 {
     public function __construct() {}
 
-    function create(Request $req)
+    function create()
     {
         $allPermissions = Permission::select('name', 'id')->get();
         $allRoles = Role::with('permissions')->withCount('users')->get();
@@ -23,7 +23,7 @@ class RolePermissionController extends Controller
         ], Response::HTTP_OK);
     }
 
-    function index_role(Request $req)
+    function index_role()
     {
         $roles = Role::with('permissions')->paginate();
         return response()->json([
@@ -91,7 +91,7 @@ class RolePermissionController extends Controller
     }
 
 
-    function index_permission(Request $req)
+    function index_permission()
     {
         $permissions = Permission::with('roles')->withCount('users')->get();
         return response()->json([
@@ -99,7 +99,7 @@ class RolePermissionController extends Controller
         ], Response::HTTP_OK);
     }
 
-    function store_permission(Request $req, Response $res)
+    function store_permission(Request $req)
     {
         $req->validate([
             'permissions' => 'required|array',
