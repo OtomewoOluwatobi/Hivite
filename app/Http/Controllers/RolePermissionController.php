@@ -26,9 +26,7 @@ class RolePermissionController extends Controller
     function index_role()
     {
         $roles = Role::with('permissions')->paginate();
-        return response()->json([
-            "data" => $roles
-        ], Response::HTTP_OK);
+        return response()->json(compact('roles'), Response::HTTP_OK);
     }
 
     function store_role(Request $req)
@@ -94,9 +92,7 @@ class RolePermissionController extends Controller
     function index_permission()
     {
         $permissions = Permission::with('roles')->withCount('users')->get();
-        return response()->json([
-            $permissions
-        ], Response::HTTP_OK);
+        return response()->json(compact('permissions'), Response::HTTP_OK);
     }
 
     function store_permission(Request $req)
