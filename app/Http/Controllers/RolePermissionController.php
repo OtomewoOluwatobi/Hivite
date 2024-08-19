@@ -52,9 +52,7 @@ class RolePermissionController extends Controller
     {
         $selected_role = Role::with('permission', 'users')->find($id);
 
-        return response()->json([
-            "data" => $selected_role
-        ], Response::HTTP_OK);
+        return response()->json(compact('selected_role'), Response::HTTP_OK);
     }
 
     function update_role(Request $req, $id)
