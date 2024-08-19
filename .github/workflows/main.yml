@@ -17,4 +17,4 @@ jobs:
           server: ftp.tunzitsolutions.com
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
-          server-dir: http://dev.hinvites.com/
+          server-dir: http://dev.hinvites.com/dev
