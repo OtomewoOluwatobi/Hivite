@@ -1,7 +1,10 @@
 on:
     push:
         branches:
-            - master
+          - master
+        paths:
+          - 'src/**'
+          - '.github/workflows/my-workflow-file.yml'
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
