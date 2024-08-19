@@ -1,17 +1,14 @@
 on:
     push:
         branches:
-          - master
-        paths:
-          - 'src/**'
-          - '.github/workflows/main.yml'
+            - master
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Get latest code 1
+      - name: 🚚 Get latest code
         uses: actions/checkout@v2
 
       - name: 📂 Sync files
@@ -20,4 +17,4 @@ jobs:
           server: ftp.tunzitsolutions.com
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
-          server-dir: http://dev.hinvites.com/dev
+          server-dir: http://dev.hinvites.com/
