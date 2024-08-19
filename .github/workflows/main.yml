@@ -4,7 +4,7 @@ on:
           - master
         paths:
           - 'src/**'
-          - '.github/workflows/my-workflow-file.yml'
+          - '.github/workflows/main.yml'
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
