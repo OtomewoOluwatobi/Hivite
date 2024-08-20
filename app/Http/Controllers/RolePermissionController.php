@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -36,16 +36,27 @@ class RolePermissionController extends Controller
             "permission_ids" => "required|array",
             "permission.*" => "required|numeric|exists:permissions,id"
         ]);
-        $newRole = Role::create([
-            'name' => strtolower($req->input('name'))
-        ]);
 
-        $syncRole = $newRole->syncPermissions($req->permission_ids);
+        try {
+            DB::beginTransaction();
 
-        return response()->json([
-            "msg" => "permissions created successfully",
-            "data" => $syncRole->with('permissions')
-        ], Response::HTTP_CREATED);
+            $newRole = Role::create([
+                'name' => strtolower($req->input('name'))
+            ]);
+            $newRole->syncPermissions($req->permission_ids);
+
+            DB::commit(); // <= Commit the changes
+
+            return response()->json([
+                "msg" => "permissions created successfully"
+            ], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+            DB::rollBack(); // <= Rollback in case of an exception
+            
+            return response()->json([
+                "msg" => $e
+            ], Response::HTTP_CREATED);
+        }
     }
 
     function show_role($id)
