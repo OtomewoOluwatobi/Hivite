@@ -31,32 +31,17 @@ class RolePermissionController extends Controller
 
     function store_role(Request $req)
     {
-        $req->validate([
+        $validatedData = $req->validate([
             'name' => 'required|string|unique:roles,name',
-            "permission_ids" => "required|array",
-            "permission.*" => "required|numeric|exists:permissions,id"
+            'permission_ids' => 'required|array',
+            'permission_ids.*' => 'required|numeric|exists:permissions,id',
         ]);
 
-        try {
-            DB::beginTransaction();
+        $newRole = Role::create(['name' => strtolower($validatedData['name'])]);
 
-            $newRole = Role::create([
-                'name' => strtolower($req->input('name'))
-            ]);
-            $newRole->syncPermissions($req->permission_ids);
+        $newRole->syncPermissions($validatedData['permission_ids']);
 
-            DB::commit(); // <= Commit the changes
-
-            return response()->json([
-                "msg" => "permissions created successfully"
-            ], Response::HTTP_CREATED);
-        } catch (\Exception $e) {
-            DB::rollBack(); // <= Rollback in case of an exception
-            
-            return response()->json([
-                "msg" => $e
-            ], Response::HTTP_CREATED);
-        }
+        return response()->json(['msg' => 'Role created successfully'], Response::HTTP_CREATED);
     }
 
     function show_role($id)
