@@ -23,6 +23,9 @@ class User extends Authenticatable
         'password',
     ];
 
+    const MALE_GENDER = "Male";
+    const FEMALE_GENDER = "Female";
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,4 +48,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public static function listGender(bool $asKeys = true): array
+    {
+        $genders = [
+            self::MALE_GENDER => ucfirst(self::MALE_GENDER),
+            self::FEMALE_GENDER => ucfirst(self::FEMALE_GENDER)
+        ];
+        return $asKeys ? $genders : array_keys($genders);
+    }
+
 }
