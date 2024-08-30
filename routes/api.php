@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Response;
@@ -32,5 +33,11 @@ Route::group(['middleware' => 'api',  'prefix' => 'admin'], function ($router) {
             Route::match(['post', 'put'], '/{id}/update', [RolePermissionController::class, 'update_permission']);
             Route::delete('/{id}/delete', [RolePermissionController::class, 'destroy_permission']);
         });
+    });
+});
+
+Route::group(['middleware' => 'api',  'prefix' => 'account'], function ($router) {
+    Route::prefix('auth')->group( function () {
+        Route::post('signup', [UserController::class, 'store']);
     });
 });

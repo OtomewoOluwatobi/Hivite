@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Models\User;
+
 return new class extends Migration
 {
     /**
@@ -16,8 +18,8 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('mobile')->unique();
-            $table->enum('gender', User::listGender());
+            $table->string('mobile')->unique()->nullable();
+            $table->enum('gender', User::listGender())->nullable();
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->json('user_location')->nullable();
